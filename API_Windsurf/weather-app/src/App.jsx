@@ -1,23 +1,28 @@
-import { useState } from 'react'
-import WeatherCard from './components/WeatherCard'
-import { getWeather } from './api/weatherApi'
-import './App.css'
+import { useState, useEffect } from 'react';
+import SearchForm from './components/SearchForm';
+import WeatherDisplay from './components/WeatherDisplay';
+import ErrorMessage from './components/ErrorMessage';
+import { getWeatherData } from './api/weatherApi';
 
+/**
+ * Główny komponent aplikacji pogodowej
+ * @returns {JSX.Element} - Element aplikacji
+ */
 function App() {
-  const [city, setCity] = useState('');
   const [weatherData, setWeatherData] = useState(null);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!city.trim()) return;
-
+  const [error, setError] = useState('');
+  
+  /**
+   * Obsługa wyszukiwania pogody dla miasta
+   * @param {string} city - Nazwa miasta
+   */
+  const handleSearch = async (city) => {
     setLoading(true);
-    setError(null);
+    setError('');
     
     try {
-      const data = await getWeather(city);
+      const data = await getWeatherData(city);
       setWeatherData(data);
     } catch (err) {
       setError(err.message);
@@ -26,35 +31,39 @@ function App() {
       setLoading(false);
     }
   };
-
+  
   return (
-    <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-      <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-        <div className="max-w-md mx-auto">
-          <form onSubmit={handleSubmit} className="mb-4">
-            <div className="flex items-center border-b border-gray-300 py-2">
-              <input
-                type="text"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                placeholder="Enter city name"
-                className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className="flex-shrink-0 bg-blue-500 hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded disabled:opacity-50"
-              >
-                {loading ? 'Loading...' : 'Check Weather'}
-              </button>
-            </div>
-          </form>
+    <div className="min-h-screen py-8 px-4">
+      <div className="max-w-md mx-auto">
+        <header className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Aplikacja Pogodowa</h1>
+          <p className="text-gray-600">Sprawdź aktualną pogodę w dowolnym mieście</p>
+        </header>
+        
+        <main>
+          <SearchForm onSearch={handleSearch} />
           
-          <WeatherCard weatherData={weatherData} error={error} />
-        </div>
+          <ErrorMessage message={error} />
+          
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          ) : weatherData ? (
+            <WeatherDisplay weatherData={weatherData} />
+          ) : !error && (
+            <div className="text-center py-12 text-gray-500">
+              <p>Wpisz nazwę miasta, aby zobaczyć pogodę</p>
+            </div>
+          )}
+        </main>
+        
+        <footer className="mt-12 text-center text-sm text-gray-500">
+          <p> {new Date().getFullYear()} Aplikacja Pogodowa</p>
+        </footer>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

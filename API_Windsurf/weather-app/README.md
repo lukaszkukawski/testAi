@@ -1,37 +1,48 @@
-# Weather App
+# Aplikacja Pogodowa
 
-A simple weather application built with React and Vite that allows users to check current weather conditions for any city.
+Prosta aplikacja React do sprawdzania aktualnej pogody w dowolnym mieście. Aplikacja korzysta z API OpenWeatherMap.
 
-## Features
+## Funkcjonalności
 
-- Search weather by city name
-- Display current temperature in Celsius
-- Show weather description and icon
-- Responsive design for mobile and desktop
-- Error handling for invalid cities or network issues
+- Wyszukiwanie pogody dla dowolnego miasta
+- Wyświetlanie aktualnej temperatury w stopniach Celsjusza
+- Wyświetlanie opisu pogody i ikony
+- Obsługa błędów (niepoprawna nazwa miasta, brak internetu)
+- Responsywny interfejs użytkownika
 
-## Setup
+## Wymagania
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
+- Node.js (wersja 14 lub nowsza)
+- Klucz API z [OpenWeatherMap](https://openweathermap.org/api)
+
+## Instalacja
+
+1. Sklonuj repozytorium
+2. Zainstaluj zależności:
+   ```
    npm install
    ```
-3. Create a `.env` file in the root directory and add your OpenWeatherMap API key:
+3. Utwórz plik `.env` w głównym katalogu projektu i dodaj swój klucz API:
    ```
-   VITE_WEATHER_API_KEY=your_api_key_here
-   ```
-4. Start the development server:
-   ```bash
-   npm run dev
+   VITE_API_KEY=twój_klucz_api_openweathermap
    ```
 
-## Technologies Used
+## Uruchomienie
 
-- React
+Aby uruchomić aplikację w trybie deweloperskim:
+
+```
+npm run dev
+```
+
+Aplikacja będzie dostępna pod adresem: [http://localhost:5173](http://localhost:5173)
+
+## Technologie
+
+- React (hooki)
 - Vite
 - Tailwind CSS
-- OpenWeatherMap API
+- Fetch API
 
 ## Expanding the ESLint configuration
 
